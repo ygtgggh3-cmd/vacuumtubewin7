@@ -1,0 +1,35 @@
+name: Build VacuumTube Win7
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+permissions:
+  contents: write
+
+jobs:
+  win7:
+    name: Windows 7/8/8.1 (Electron 22)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npx electron-builder --win --x64 --ia32 --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VacuumTube-Win7
+          path: |
+            dist/VacuumTube-Win7-Setup-*.exe
+            dist/VacuumTube-Win7-*.zip
+      - name: Publicar release (solo con tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${{ github.ref_name }}" dist/VacuumTube-Win7-Setup-*.exe dist/VacuumTube-Win7-*.zip --title "${{ github.ref_name }}" --generate-notes

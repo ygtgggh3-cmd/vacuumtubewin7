@@ -1,0 +1,61 @@
+{
+    "name": "vacuumtube-win7",
+    "version": "2.0.1",
+    "description": "YouTube for TV, on your PC (Windows 7/8/8.1 build)",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "electron .",
+        "test": "node --test",
+        "windows:build": "electron-builder --win --x64 --ia32"
+    },
+    "keywords": [],
+    "author": "shy (shy@shy.rocks)",
+    "license": "MIT",
+    "desktopName": "rocks.shy.VacuumTube",
+    "vacuumtube": {
+        "legacy": true,
+        "legacyReason": "Electron 22 (Chromium 108) is the last Electron release that runs on Windows 7/8/8.1",
+        "releasesUrl": "https://github.com/ygtgggh3-cmd/vacuumtubewin7/releases/latest"
+    },
+    "build": {
+        "appId": "rocks.shy.VacuumTube.Win7",
+        "productName": "VacuumTube Win7",
+        "artifactName": "VacuumTube-Win7-${arch}.${ext}",
+        "publish": null,
+        "win": {
+            "icon": "./assets/icon.ico",
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                },
+                {
+                    "target": "zip",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                }
+            ]
+        },
+        "nsis": {
+            "artifactName": "VacuumTube-Win7-Setup-${arch}.${ext}",
+            "uninstallDisplayName": "VacuumTube (Windows 7)",
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "allowElevation": true,
+            "perMachine": false
+        }
+    },
+    "devDependencies": {
+        "electron": "22.3.27",
+        "electron-builder": "24.13.3"
+    },
+    "dependencies": {
+        "chokidar": "^3.6.0",
+        "string-argv": "^0.3.2"
+    }
+}
